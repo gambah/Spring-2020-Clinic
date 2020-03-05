@@ -44,8 +44,7 @@ int main(int argc, char** argv){
 		n=1000;
 		my_bcast(&n, 1, MPI_INT, 0, MPI_COMM_WORLD);
 	}else{
-		my_bcast(&n, 1, MPI_INT, 0, MPI_COMM_WORLD);
-		
+		my_bcast(&n, 1, MPI_INT, 0, MPI_COMM_WORLD);	
 	}
 
 	//tells how many times the number of squares needed goes into the amount of processors that are available.
