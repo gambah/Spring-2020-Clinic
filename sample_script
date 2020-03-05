@@ -1,0 +1,12 @@
+#!/bin/sh
+echo "SLURM_JOBID="$SLURM_JOBID
+echo "SLURM_JOB_NODELIST"=$SLURM_JOB_NODELIST
+echo "SLURM_NNODES"=$SLURM_NNODES
+echo "SLURMTMPDIR="$SLURMTMPDIR cd $SLURM_SUBMIT_DIR
+echo "working directory = "$SLURM_SUBMIT_DIR
+module list
+ulimit -s unlimited
+echo "Run ./squares.c with mpirun"
+export I_MPI_PMI_LIBRARY=/usr/lib64/libpmi.so
+mpirun -np=5 ./a.out
+echo="All Done!"
