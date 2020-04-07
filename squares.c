@@ -1,4 +1,4 @@
-//this code can send an array through MPI broadcast and it can time the entire proccess 
+//This code can populate values into an array, send the array, square each value within the array, and time the entire process. 
 
 #include <stdio.h>
 #include <mpi.h>
@@ -46,46 +46,37 @@ int main(int argc, char** argv){
 	int name_len;
 	MPI_Get_processor_name(processor_name, &name_len);
  
-  x = 10;
+  //Creates and populates an array with values 1 through x.
+  x = 100;
   int n[x];
   int count;
   for(count = 0; count < x; count++) { 
     n[count] = count + 1; 
 	}
   
-	//How many squares that need to be found.
+	//Broadcasts the array.
 	if(my_rank == 0){
-
 		my_bcast(&n, x, MPI_INT, 0, MPI_COMM_WORLD);
 	}
   else{
 		my_bcast(&n, x, MPI_INT, 0, MPI_COMM_WORLD);	
 	}
 
-	//tells how many times the number of squares needed goes into the amount of processors that are available.
-	double y, i, b;
+	//Tells how many times the number of squares needed goes into the amount of processors that are available.
+	double y;
+  int i, b;
 	y = x / world_size;
- 
-  for(count = 0; count < x; count++) { 
-    n[count] = count + 1; 
-	}
 
 	//Makes the output read "1 of 4", "2 of 4", "3 of 4", "4 of 4", instead of "0 of 4", etc.
 	int fart;
 	fart = my_rank + 1;
 	
+	//Squares each value within the array. 
 	for(i=(y*my_rank)+1; i<=y*(my_rank+1); i++)
 	{	
-		f = (100000*i*i*i*i*i*i*i)+(i*i*i*i*i*i)-(1254364*i*i*i*i*i)-(i*i)+16543;
-		g = (120*i*i);
-		h = (2789*i*i*i*i*i)-(1234432*i*i*i)-(i*i);
-		b = (156825*i*i*i*i)-(412343*i*i*i)+(18*i*i)-(32*i)-64;
-		printf("b = %f. Printed by processor %d of %d\n",b,fart,world_size);
+		b = (n[i-1]*n[i-1]);
+		printf("b = %d. Printed by processor %d of %d\n",b,fart,world_size);
 	}
-	
-  for(int arrayspot = 0; arrayspot < x; arrayspot++) { 
-    printf("%d\n", n[arrayspot]); 
-	} 
  
   MPI_Barrier(MPI_COMM_WORLD); /* IMPORTANT */
   end = MPI_Wtime();
